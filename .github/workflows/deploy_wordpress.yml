@@ -69,4 +69,4 @@ jobs:
           TF_VAR_KEY_PAIR_NAME: ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
           TF_VAR_REDIS_CLUSTER_ID: ${{ vars.TF_VAR_REDIS_CLUSTER_ID }}
           SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
-          AWS_REGION:
+          AWS_REGION: ${{ vars.AWS_REGION }}
