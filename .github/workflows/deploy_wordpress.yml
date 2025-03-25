@@ -11,6 +11,7 @@ on:
       - "**.tf"
       - "**.tfvars"
       - "deploy.sh"
+      - "terraform.tfstate"
 
 jobs:
   deploy:
