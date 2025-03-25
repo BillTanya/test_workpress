@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - test-workpress
     paths:
       - ".github/workflows/deploy_wordpress.yml"
       - "modules/**"
