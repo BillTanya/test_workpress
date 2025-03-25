@@ -37,8 +37,17 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Apply Terraform
-        run: terraform apply -auto-approve
+      - name: Plan Terraform Changes
+        run: terraform plan -out=tfplan
+        env:
+          TF_VAR_RDS_USER_NAME: ${{ vars.TF_VAR_RDS_USER_NAME }}
+          TF_VAR_RDS_PASSWORD: ${{ secrets.TF_VAR_RDS_PASSWORD }}
+          TF_VAR_DB_NAME: ${{ vars.TF_VAR_DB_NAME }}
+          TF_VAR_KEY_PAIR_NAME: ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
+          TF_VAR_REDIS_CLUSTER_ID: ${{ vars.TF_VAR_REDIS_CLUSTER_ID }}
+
+      - name: Apply Terraform Changes
+        run: terraform apply -auto-approve tfplan
         env:
           TF_VAR_RDS_USER_NAME:  ${{ vars.TF_VAR_RDS_USER_NAME }}
           TF_VAR_RDS_PASSWORD:  ${{ secrets.TF_VAR_RDS_PASSWORD }}
