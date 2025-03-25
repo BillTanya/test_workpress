@@ -104,9 +104,6 @@ sudo chmod -R 777 /var/www/html/wp-content
 echo "Core install WordPress"
 wp core install --url="http://'$EC2_PUBLIC_IP'" --title="Test Site Title" --admin_user="admin" --admin_password="'$SITE_PASSWORD'" --admin_email="test-word-press@gmail.com"
 
-echo "Create the first post"
-wp post create --post_title="My first post" --post_content="text" --post_status=publish --post_author=1
-
 echo "Update site URL"
 wp option update home "http://'$EC2_PUBLIC_IP'"
 wp option update siteurl "http://'$EC2_PUBLIC_IP'"
@@ -123,7 +120,7 @@ sudo a2enmod rewrite
 sudo systemctl restart apache2
 
 echo "Remove object-cache.php"
-sudo rm object-cache.php
+sudo rm wp-content/object-cache.php
 '
 
 echo "Executing commands on EC2 instance..."
