@@ -5,12 +5,12 @@ on:
     branches:
       - main
       - test-workpress
-  paths:
-    - ".github/workflows/deploy_wordpress.yml"
-    - "modules/**"
-    - "**.tf"
-    - "**.tfvars"
-    - "deploy.sh"
+    paths:
+      - ".github/workflows/deploy_wordpress.yml"
+      - "modules/**"
+      - "**.tf"
+      - "**.tfvars"
+      - "deploy.sh"
 
 jobs:
   deploy:
