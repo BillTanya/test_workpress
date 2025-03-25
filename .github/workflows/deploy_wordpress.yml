@@ -35,6 +35,16 @@ jobs:
         with:
           terraform_version: 1.6.0
 
+      - name: Set the variable to GITHUB_ENV
+        run: |
+          echo "TF_VAR_RDS_USER_NAME=${{ vars.TF_VAR_RDS_USER_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_RDS_PASSWORD=${{ secrets.TF_VAR_RDS_PASSWORD }}" >> $GITHUB_ENV
+          echo "TF_VAR_DB_NAME=${{ vars.TF_VAR_DB_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_REDIS_CLUSTER_ID=${{ vars.TF_VAR_REDIS_CLUSTER_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_KEY_PAIR_NAME=${{ secrets.TF_VAR_KEY_PAIR_NAME }}" >> $GITHUB_ENV
+          echo "SITE_PASSWORD=${{ secrets.SITE_PASSWORD }}" >> $GITHUB_ENV
+          echo "AWS_REGION=${{ vars.AWS_REGION }}" >> $GITHUB_ENV
+
       - name: Initialize Terraform
         run: terraform init
 
@@ -54,22 +64,11 @@ jobs:
       - name: Plan Terraform Changes
         if: env.TF_STATE_EXISTS == 'false'
         run: terraform plan -out=tfplan
-        env:
-          TF_VAR_RDS_USER_NAME: ${{ vars.TF_VAR_RDS_USER_NAME }}
-          TF_VAR_RDS_PASSWORD: ${{ secrets.TF_VAR_RDS_PASSWORD }}
-          TF_VAR_DB_NAME: ${{ vars.TF_VAR_DB_NAME }}
-          TF_VAR_KEY_PAIR_NAME: ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
-          TF_VAR_REDIS_CLUSTER_ID: ${{ vars.TF_VAR_REDIS_CLUSTER_ID }}
+
 
       - name: Apply Terraform Changes
         if: env.TF_STATE_EXISTS == 'false'
         run: terraform apply -auto-approve tfplan
-        env:
-          TF_VAR_RDS_USER_NAME:  ${{ vars.TF_VAR_RDS_USER_NAME }}
-          TF_VAR_RDS_PASSWORD:  ${{ secrets.TF_VAR_RDS_PASSWORD }}
-          TF_VAR_DB_NAME:  ${{ vars.TF_VAR_DB_NAME }}
-          TF_VAR_KEY_PAIR_NAME:  ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
-          TF_VAR_REDIS_CLUSTER_ID:  ${{ vars.TF_VAR_REDIS_CLUSTER_ID }}
 
       - name: Get Terraform Outputs
         id: tf_outputs
@@ -87,11 +86,3 @@ jobs:
         run: |
           chmod +x deploy.sh
           ./deploy.sh
-        env:
-          TF_VAR_RDS_USER_NAME: ${{ vars.TF_VAR_RDS_USER_NAME }}
-          TF_VAR_RDS_PASSWORD: ${{ secrets.TF_VAR_RDS_PASSWORD }}
-          TF_VAR_DB_NAME: ${{ vars.TF_VAR_DB_NAME }}
-          TF_VAR_KEY_PAIR_NAME: ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
-          TF_VAR_REDIS_CLUSTER_ID: ${{ vars.TF_VAR_REDIS_CLUSTER_ID }}
-          SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
-          AWS_REGION: ${{ vars.AWS_REGION }}
